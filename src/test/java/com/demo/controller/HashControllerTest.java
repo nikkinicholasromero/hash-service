@@ -1,5 +1,6 @@
-package com.demo;
+package com.demo.controller;
 
+import com.demo.service.HashService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,18 +27,17 @@ public class HashControllerTest {
     @MockBean
     private HashService hashService;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
         when(hashService.generateRandomSalt()).thenReturn("someRandomSalt");
         when(hashService.hash(anyString(), anyString())).thenReturn("someHashedText");
-
-        objectMapper = new ObjectMapper();
     }
 
     @Test
-    public void getRandomSalt() throws Exception {
+    public void generateRandomSalt() throws Exception {
         mockMvc.perform(get("/salt"))
                 .andDo(print())
                 .andExpect(status().isOk())
